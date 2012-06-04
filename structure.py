@@ -35,13 +35,17 @@ class Section(object):
 	def __init__(self, parent, node):
 		self.parent = parent
 		self.childs = []
+		
 		self.name = None
 		self.title = None
 		self.template = None
 
-		for attribute in ('name', 'title', 'template', ):
-			if node.hasAttribute(attribute):
-				setattr(self, attribute, node.getAttribute(attribute))
+		# list of protected attributes: used internally or calculated later
+		protected = ('child', 'parent', 'path', 'path_names', 'url_path', )
+		for i in xrange(node.attributes.length):
+			attr = node.attributes.item(i)
+			if attr.name not in protected:
+				setattr(self, attr.name, attr.value)
 
 		assert self.name is not None, "name missing within %s: %s" % (self.url_path, node.toxml())
 
