@@ -1,6 +1,6 @@
 # Copyright (c) 2012, Christoph Frick
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #     * Redistributions of source code must retain the above copyright
@@ -11,7 +11,7 @@
 #     * Neither the name of the <organization> nor the
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -31,7 +31,7 @@ from chameleon import PageTemplateFile
 from docutils.core import publish_parts
 
 class Template(object):
-	
+
 	def __init__(self, cms, section):
 		self.cms = cms
 		self.section = section
@@ -62,12 +62,13 @@ class Template(object):
 			content = codecs.open(sourcefile, encoding='utf-8').read()
 			if fnmatch.fnmatch(sourcefile, '*.rst'):
 				contents[name] = body=publish_parts(
-					content, 
-					writer_name='html', 
+					content,
+					writer_name='html',
 					settings_overrides=dict(
-						input_encoding='utf-8', 
+						input_encoding='utf-8',
 						output_encoding='utf-8',
 						doctitle_xform=False,
+                        syntax_highlight="short",
 					)
 				)['html_body']
 			else:
@@ -77,10 +78,10 @@ class Template(object):
 		taltemplate = PageTemplateFile(self.template)
 		result = taltemplate(
 				encoding='utf-8',
-				cms=self.cms, 
+				cms=self.cms,
 				root=self.cms.navigation.root,
 				content=contents,
-				section=self.section, 
+				section=self.section,
 				)
 		codecs.open(self.target, "w", encoding='utf-8').write(result)
 
